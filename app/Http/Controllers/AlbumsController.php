@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 use App\models\Album;
 use App\models\photo;
+use App\models\User;
+use Auth;
+
 
 use Illuminate\Http\Request;
 
@@ -16,11 +19,17 @@ class AlbumsController extends Controller
     }
 
     public function index(){
-        $album = Album::with('Photos')->get();
-        return view('albums.index')->with('album',$album);
+        // $album = Album::with('Photos')->get();
+        $user = Auth()->user()->id;
+        $album = User::find($user)->albums()->with('photos')->get();
+
+         return view('albums.index')->with('album',$album);
+
+        return $user;
 
     }
     public function create(){
+
         return view('albums.create');
     }
     public function store(Request $request){
@@ -38,6 +47,7 @@ class AlbumsController extends Controller
     $album -> name = $request->input('name');
     $album -> cover_image = $filenameToStore;
     $album -> description = $request->input('description');
+    $album ->user_id = Auth()->user()->id;
     $album->save();
    return redirect('/albums')->with('success','Album created successfully');
     }

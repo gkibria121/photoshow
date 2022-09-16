@@ -10,9 +10,11 @@
                     <li class="nav-item">
                         <a class="nav-link {{Request::is('/albums') ? 'active' : ''}}" href="/albums">My Albums</a>
                       </li>
+                      @if(Auth::user())
                     <li class="nav-item">
                         <a class="nav-link {{Request::is('/albums/create') ? active : ''}}" href="/albums/create">Create Albums</a>
                       </li>
+                      @endif
 
                   </ul>
                   <ul class="navbar-nav me-auto">
